@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register - Abuzar's Bank</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0b;
+            --secondary-bg: #111218;
+            --card-bg: #1a1b23;
+            --accent-bg: #2a2b35;
+            --primary-text: #ffffff;
+            --secondary-text: #a0a1a7;
+            --accent-color: #ffd700;
+            --success-color: #00d4aa;
+            --danger-color: #ff6b6b;
+            --border-color: #2a2b35;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.4);
+            --gradient-primary: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            --gradient-bg: linear-gradient(135deg, #0a0a0b 0%, #111218 50%, #1a1b23 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-bg);
+            color: var(--primary-text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at top, rgba(255, 215, 0, 0.02) 0%, transparent 50%),
+            radial-gradient(ellipse at bottom right, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        .navbar-custom {
+            background: rgba(10, 10, 11, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-text) !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .navbar-brand::before {
+            content: '🏦';
+            font-size: 1.2em;
+        }
+
+        .social-icons a {
+            color: var(--secondary-text) !important;
+            margin-left: 1rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Register Container */
+        .register-container {
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .register-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .register-container:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .register-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-text);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--primary-text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+            background: var(--card-bg);
+            transform: translateY(-1px);
+        }
+
+        .form-control::placeholder {
+            color: var(--secondary-text);
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 12px;
+            color: var(--primary-bg);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        /* Links */
+        .custom-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .custom-link:hover {
+            color: var(--primary-text);
+            text-decoration: none;
+        }
+
+        .login-link {
+            text-align: center;
+            color: var(--secondary-text);
+            font-size: 0.95rem;
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid var(--danger-color);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            color: var(--danger-color);
+            text-align: center;
+            font-weight: 500;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .footer-content {
+            color: var(--secondary-text);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--primary-text);
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading .btn-register {
+            background: var(--secondary-text);
+            cursor: not-allowed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .register-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .register-title {
+                font-size: 1.75rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Input Icon Enhancement */
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-text);
+            z-index: 10;
+        }
+
+        .input-group .form-control {
+            padding-left: 2.75rem;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" href="#">Abuzar's Bank</a>
+    </div>
+</nav>
+
+<!-- Register Container -->
+<div class="register-container">
+    <h2 class="register-title">Create Account</h2>
+
+    <form method="post" action="/register" onsubmit="handleSubmit(this)">
+        <div class="form-group">
+            <label class="form-label">Username</label>
+            <div class="input-group">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" class="form-control" name="username" placeholder="Choose a username" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" class="form-control" name="password" placeholder="Create a password" required />
+            </div>
+        </div>
+
+        <button type="submit" class="btn-register">
+            <i class="fas fa-user-plus"></i> Create Account
+        </button>
+    </form>
+
+    <div class="login-link">
+        Already have an account? <a href="/login" class="custom-link">Sign in here</a>
+    </div>
+
+    <div th:if="${error}" class="error-message">
+        <i class="fas fa-exclamation-triangle"></i> User already exists.
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2024 Goldencat Bank. Your trusted financial partner.</p>
+            <p>
+                <a href="#" onclick="return false;">Privacy Policy</a> |
+                <a href="#" onclick="return false;">Terms of Service</a> |
+                <a href="#" onclick="return false;">Contact Support</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function handleSubmit(form) {
+        const submitBtn = form.querySelector('.btn-register');
+        const originalText = submitBtn.innerHTML;
+
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+        form.classList.add('loading');
+
+        return true;
+    }
+
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+
+        input.addEventListener('blur', function() {
+            if (!this.value) {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+    });
+
+    window.addEventListener('load', function() {
+        const registerContainer = document.querySelector('.register-container');
+        if (registerContainer) {
+            setTimeout(() => {
+                registerContainer.style.opacity = '0';
+                registerContainer.style.transform = 'translateY(20px)';
+                registerContainer.style.transition = 'all 0.6s ease';
+
+                setTimeout(() => {
+                    registerContainer.style.opacity = '1';
+                    registerContainer.style.transform = 'translateY(0)';
+                }, 100);
+            }, 100);
+        }
+    });
+</script>
+</body>
+</html>

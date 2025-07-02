@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard - Goldencat Bank</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0b;
+            --secondary-bg: #111218;
+            --card-bg: #1a1b23;
+            --accent-bg: #2a2b35;
+            --primary-text: #ffffff;
+            --secondary-text: #a0a1a7;
+            --accent-color: #ffd700;
+            --success-color: #00d4aa;
+            --danger-color: #ff6b6b;
+            --border-color: #2a2b35;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.4);
+            --gradient-primary: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            --gradient-bg: linear-gradient(135deg, #0a0a0b 0%, #111218 50%, #1a1b23 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-bg);
+            color: var(--primary-text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at top, rgba(255, 215, 0, 0.02) 0%, transparent 50%),
+            radial-gradient(ellipse at bottom right, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        .navbar-custom {
+            background: rgba(10, 10, 11, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-text) !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand::before {
+            content: '🏦';
+            font-size: 1.2em;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--secondary-text) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-text) !important;
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Main Container */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: calc(100vh - 140px);
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary-text);
+            margin-bottom: 2rem;
+        }
+
+        /* Balance Card */
+        .balance-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .balance-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .balance-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .balance-label {
+            color: var(--secondary-text);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Account Details */
+        .account-details {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .account-details h4 {
+            color: var(--primary-text);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--secondary-text);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: var(--primary-text);
+            font-weight: 600;
+        }
+
+        /* Action Cards */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .action-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-color);
+        }
+
+        .action-header {
+            padding: 1.5rem;
+            background: var(--accent-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .action-button {
+            background: none;
+            border: none;
+            color: var(--primary-text);
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            color: var(--accent-color);
+        }
+
+        .action-button i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .action-form {
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .action-form.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-text);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--primary-text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+            background: var(--card-bg);
+        }
+
+        .form-control::placeholder {
+            color: var(--secondary-text);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 8px;
+            color: var(--primary-bg);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid var(--danger-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 2rem;
+            color: var(--danger-color);
+            text-align: center;
+            font-weight: 500;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--primary-text);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .balance-amount {
+                font-size: 2.5rem;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading .btn-submit {
+            background: var(--secondary-text);
+            cursor: not-allowed;
+        }
+
+        /* Success Animation */
+        @keyframes success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .success-animation {
+            animation: success 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Goldencat Bank</a>
+        <div class="navbar-nav ml-auto">
+            <a class="nav-link" href="/dashboard">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a class="nav-link" href="/transactions">
+                <i class="fas fa-exchange-alt"></i> Transactions
+            </a>
+            <a class="nav-link" href="/logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container dashboard-container" style="margin-top: 80px;">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <h1 class="welcome-title" th:text="'Welcome back, ' + ${account.username}">Welcome back, User</h1>
+        <p class="welcome-subtitle">Manage your finances with confidence and security</p>
+    </div>
+
+    <!-- Balance Card -->
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="balance-card text-center">
+                <div class="balance-label">Current Balance</div>
+                <div class="balance-amount" th:text="'$' + ${account.balance}">$0.00</div>
+                <div class="balance-label">Available Funds</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Details -->
+    <div class="account-details">
+        <h4><i class="fas fa-user-circle"></i> Account Information</h4>
+        <div class="detail-item">
+            <span class="detail-label">Account Number</span>
+            <span class="detail-value" th:text="${account.id}">****1234</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Account Type</span>
+            <span class="detail-value">Premium Savings</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Account Status</span>
+            <span class="detail-value" style="color: var(--success-color);">
+                    <i class="fas fa-check-circle"></i> Active
+                </span>
+        </div>
+    </div>
+
+    <!-- Action Cards -->
+    <div class="actions-grid">
+        <!-- Deposit Card -->
+        <div class="action-card">
+            <div class="action-header">
+                <button class="action-button" onclick="toggleForm('depositForm')">
+                    <i class="fas fa-plus-circle" style="color: var(--success-color);"></i>
+                    <span>Deposit Money</span>
+                    <i class="fas fa-chevron-down ml-auto"></i>
+                </button>
+            </div>
+            <div class="action-form" id="depositForm">
+                <form method="post" action="/deposit" onsubmit="handleSubmit(this)">
+                    <div class="form-group">
+                        <label class="form-label">Amount to Deposit</label>
+                        <input type="number" class="form-control" name="amount" placeholder="Enter amount" required min="0.01" step="0.01" />
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-arrow-up"></i> Deposit Funds
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Withdraw Card -->
+        <div class="action-card">
+            <div class="action-header">
+                <button class="action-button" onclick="toggleForm('withdrawForm')">
+                    <i class="fas fa-minus-circle" style="color: var(--danger-color);"></i>
+                    <span>Withdraw Money</span>
+                    <i class="fas fa-chevron-down ml-auto"></i>
+                </button>
+            </div>
+            <div class="action-form" id="withdrawForm">
+                <form method="post" action="/withdraw" onsubmit="handleSubmit(this)">
+                    <div class="form-group">
+                        <label class="form-label">Amount to Withdraw</label>
+                        <input type="number" class="form-control" name="amount" placeholder="Enter amount" required min="0.01" step="0.01" />
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-arrow-down"></i> Withdraw Funds
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Transfer Card -->
+        <div class="action-card">
+            <div class="action-header">
+                <button class="action-button" onclick="toggleForm('transferForm')">
+                    <i class="fas fa-exchange-alt" style="color: var(--accent-color);"></i>
+                    <span>Transfer Money</span>
+                    <i class="fas fa-chevron-down ml-auto"></i>
+                </button>
+            </div>
+            <div class="action-form" id="transferForm">
+                <form method="post" action="/transfer" onsubmit="handleSubmit(this)">
+                    <div class="form-group">
+                        <label class="form-label">Recipient Username</label>
+                        <input type="text" class="form-control" name="toUsername" placeholder="Enter recipient username" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amount to Transfer</label>
+                        <input type="number" class="form-control" name="amount" placeholder="Enter amount" required min="0.01" step="0.01" />
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> Send Transfer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    <div th:if="${error != null}" class="error-message" th:text="${error}">
+        Error message will appear here
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2024 Goldencat Bank. Your trusted financial partner.</p>
+            <p>
+                <a href="#" onclick="return false;">Privacy Policy</a> |
+                <a href="#" onclick="return false;">Terms of Service</a> |
+                <a href="#" onclick="return false;">Contact Support</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function toggleForm(formId) {
+        const form = document.getElementById(formId);
+        const button = form.previousElementSibling.querySelector('.action-button i:last-child');
+
+        // Close other forms
+        document.querySelectorAll('.action-form').forEach(f => {
+            if (f.id !== formId && f.classList.contains('show')) {
+                f.classList.remove('show');
+                const otherButton = f.previousElementSibling.querySelector('.action-button i:last-child');
+                otherButton.style.transform = 'rotate(0deg)';
+            }
+        });
+
+        // Toggle current form
+        form.classList.toggle('show');
+        const isOpen = form.classList.contains('show');
+        button.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+        button.style.transition = 'transform 0.3s ease';
+    }
+
+    function handleSubmit(form) {
+        const submitBtn = form.querySelector('.btn-submit');
+        const originalText = submitBtn.innerHTML;
+
+        // Add loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        form.classList.add('loading');
+
+        // Note: In a real application, you might want to handle the response
+        // For now, we'll let the form submit normally to Spring Boot
+        return true;
+    }
+
+    // Add smooth scrolling for better UX
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Add success animation to balance card on page load
+    window.addEventListener('load', function() {
+        const balanceCard = document.querySelector('.balance-card');
+        if (balanceCard) {
+            setTimeout(() => {
+                balanceCard.classList.add('success-animation');
+            }, 500);
+        }
+    });
+
+    // Form validation enhancements
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.value < 0) {
+                this.value = 0;
+            }
+        });
+    });
+</script>
+</body>
+</html>
