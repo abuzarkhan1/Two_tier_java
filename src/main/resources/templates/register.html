@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<<<<<<< HEAD
     <title>Register - Abuzar's Bank</title>
+=======
+    <title>Register - Goldencat Bank</title>
+>>>>>>> 1c5901587178f692b2abb4e6ed11d8f92e736ad7
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -314,7 +318,19 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container">
+<<<<<<< HEAD
         <a class="navbar-brand" href="#">Abuzar's Bank</a>
+=======
+        <a class="navbar-brand" href="#">Goldencat Bank</a>
+        <div class="ml-auto social-icons">
+            <a href="https://www.youtube.com/@codewithgoldencat" target="_blank" title="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/code-with-goldecat-453460297/" target="_blank" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+        </div>
+>>>>>>> 1c5901587178f692b2abb4e6ed11d8f92e736ad7
     </div>
 </nav>
 
@@ -367,17 +383,33 @@
     </div>
 </footer>
 
+<<<<<<< HEAD
+=======
+<!-- Scripts -->
+>>>>>>> 1c5901587178f692b2abb4e6ed11d8f92e736ad7
 <script>
     function handleSubmit(form) {
         const submitBtn = form.querySelector('.btn-register');
         const originalText = submitBtn.innerHTML;
 
+<<<<<<< HEAD
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
         form.classList.add('loading');
 
         return true;
     }
 
+=======
+        // Add loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+        form.classList.add('loading');
+
+        // Let the form submit normally to Spring Boot
+        return true;
+    }
+
+    // Add floating label animation
+>>>>>>> 1c5901587178f692b2abb4e6ed11d8f92e736ad7
     document.querySelectorAll('.form-control').forEach(input => {
         input.addEventListener('focus', function() {
             this.parentElement.classList.add('focused');
@@ -390,6 +422,10 @@
         });
     });
 
+<<<<<<< HEAD
+=======
+    // Add success animation on page load
+>>>>>>> 1c5901587178f692b2abb4e6ed11d8f92e736ad7
     window.addEventListener('load', function() {
         const registerContainer = document.querySelector('.register-container');
         if (registerContainer) {
