@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Transaction History - Goldencat Bank</title>
+    <title>Transaction History - Abuzar's Bank</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -40,7 +40,6 @@
             padding-bottom: 80px;
         }
 
-        /* Animated Background */
         body::before {
             content: '';
             position: fixed;
@@ -54,7 +53,6 @@
             z-index: -1;
         }
 
-        /* Navigation */
         .navbar-custom {
             background: rgba(10, 10, 11, 0.95);
             backdrop-filter: blur(20px);
@@ -98,7 +96,6 @@
             transform: translateY(-1px);
         }
 
-        /* Main Container */
         .main-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -116,7 +113,6 @@
             background-clip: text;
         }
 
-        /* Transaction Table Container */
         .transaction-container {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -126,6 +122,7 @@
             position: relative;
             transition: all 0.3s ease;
             margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease-out;
         }
 
         .transaction-container::before {
@@ -143,7 +140,6 @@
             box-shadow: var(--shadow-hover);
         }
 
-        /* Table Header */
         .table-header {
             background: var(--accent-bg);
             padding: 1.5rem 2rem;
@@ -160,7 +156,6 @@
             gap: 0.5rem;
         }
 
-        /* Table Styling */
         .table-responsive {
             padding: 0;
         }
@@ -208,7 +203,6 @@
             vertical-align: middle;
         }
 
-        /* Transaction Type Styling */
         .transaction-type {
             display: inline-flex;
             align-items: center;
@@ -234,7 +228,6 @@
             border: 1px solid rgba(255, 107, 107, 0.2);
         }
 
-        /* Amount Styling */
         .amount {
             font-weight: 700;
             font-size: 1.1rem;
@@ -255,13 +248,11 @@
             font-size: 0.8rem;
         }
 
-        /* Date Styling */
         .transaction-date {
             color: var(--secondary-text);
             font-size: 0.9rem;
         }
 
-        /* Back Link */
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -284,7 +275,6 @@
             text-decoration: none;
         }
 
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -302,7 +292,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .main-container {
                 padding: 1rem;
@@ -334,7 +323,6 @@
             }
         }
 
-        /* Loading Animation */
         .loading {
             opacity: 0.7;
             pointer-events: none;
@@ -350,21 +338,13 @@
                 transform: translateY(0);
             }
         }
-
-        .transaction-container {
-            animation: fadeInUp 0.6s ease-out;
-        }
     </style>
 </head>
 <body>
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container">
-<<<<<<< HEAD
         <a class="navbar-brand" href="#">Abuzar's Bank</a>
-=======
-        <a class="navbar-brand" href="#">Goldencat Bank</a>
->>>>>>> 1c5901587178f692b2abb4e6ed11d8f92e736ad7
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -420,20 +400,20 @@
                         <span class="text-muted">#</span><span th:text="${transaction.id}"></span>
                     </td>
                     <td>
-                            <span class="transaction-type"
-                                  th:classappend="${transaction.type.toLowerCase().replace(' ', '-')}">
-                                <i class="fas fa-circle" th:if="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'}"></i>
-                                <i class="fas fa-circle" th:if="${transaction.type.contains('Transfer Out') || transaction.type == 'Withdrawal'}"></i>
-                                <span th:text="${transaction.type}"></span>
-                            </span>
+                        <span class="transaction-type"
+                              th:classappend="${transaction.type.toLowerCase().replace(' ', '-')}">
+                            <i class="fas fa-circle" th:if="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'}"></i>
+                            <i class="fas fa-circle" th:if="${transaction.type.contains('Transfer Out') || transaction.type == 'Withdrawal'}"></i>
+                            <span th:text="${transaction.type}"></span>
+                        </span>
                     </td>
                     <td>
-                            <span class="amount"
-                                  th:classappend="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? 'positive' : 'negative'">
-                                <i class="fas fa-arrow-up icon" th:if="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'}"></i>
-                                <i class="fas fa-arrow-down icon" th:if="${transaction.type.contains('Transfer Out') || transaction.type == 'Withdrawal'}"></i>
-                                <span th:text="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? '+$' + transaction.amount : '-$' + transaction.amount"></span>
-                            </span>
+                        <span class="amount"
+                              th:classappend="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? 'positive' : 'negative'">
+                            <i class="fas fa-arrow-up icon" th:if="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'}"></i>
+                            <i class="fas fa-arrow-down icon" th:if="${transaction.type.contains('Transfer Out') || transaction.type == 'Withdrawal'}"></i>
+                            <span th:text="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? '+$' + transaction.amount : '-$' + transaction.amount"></span>
+                        </span>
                     </td>
                     <td>
                         <span class="transaction-date" th:text="${transaction.timestamp}"></span>
@@ -443,10 +423,6 @@
             </table>
         </div>
 
-<<<<<<< HEAD
-=======
-        <!-- Empty State (shown when no transactions) -->
->>>>>>> 1c5901587178f692b2abb4e6ed11d8f92e736ad7
         <div class="empty-state" th:if="${#lists.isEmpty(transactions)}">
             <i class="fas fa-inbox"></i>
             <h4>No Transactions Found</h4>
@@ -483,10 +459,7 @@
         }
     });
 
-<<<<<<< HEAD
-=======
-    // Add smooth scrolling
->>>>>>> 1c5901587178f692b2abb4e6ed11d8f92e736ad7
+    // Add smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -496,10 +469,7 @@
         });
     });
 
-<<<<<<< HEAD
-=======
-    // Add table row animations
->>>>>>> 1c5901587178f692b2abb4e6ed11d8f92e736ad7
+    // Add table row animations (optional, if you want to animate rows)
     document.querySelectorAll('.table-custom tbody tr').forEach((row, index) => {
         row.style.animationDelay = `${index * 0.1}s`;
         row.classList.add('fade-in-row');
